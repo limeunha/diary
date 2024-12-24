@@ -5,16 +5,16 @@ module.exports = class User extends Sequelize.Model {
       return super.init(
          {
             email: {
-               type: Sequelize.STRING(20),
+               type: Sequelize.STRING(40),
                allowNull: false,
                unique: true,
             },
             nick: {
-               type: Sequelize.STRING(20),
+               type: Sequelize.STRING(15),
                allowNull: false,
             },
             password: {
-               type: Sequelize.STRING(20),
+               type: Sequelize.STRING(100),
                allowNull: false,
             },
          },
@@ -30,4 +30,5 @@ module.exports = class User extends Sequelize.Model {
          }
       )
    }
+   static associate(db) {}
 }
