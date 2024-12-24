@@ -9,7 +9,7 @@ const Navbar = ({ isAuthenticated }) => {
                <Link to="/" style={{ marginRight: '20px', textDecoration: 'none', color: 'green', fontSize: '20px' }}>
                   ☆비밀일기☆
                </Link>
-               <Link to="/" style={{ marginRight: '20px', textDecoration: 'none', color: 'green', fontSize: '20px' }}>
+               <Link to="/diary" style={{ marginRight: '20px', textDecoration: 'none', color: 'green', fontSize: '20px' }}>
                   ☆비밀일기장☆
                </Link>
                <Link to="/" style={{ marginRight: '20px', textDecoration: 'none', color: 'green', fontSize: '20px' }}>

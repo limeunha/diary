@@ -4,6 +4,7 @@ import Navbar from './components/shared/Navbar'
 import Home from './pages/Home'
 import SignupPage from './pages/SignupPage'
 import LoginPage from './pages/LoginPage'
+import DiaryPage from './pages/DiaryPage'
 
 function App() {
    return (
@@ -11,6 +12,7 @@ function App() {
          <Navbar />
          <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/diary" element={<DiaryPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
          </Routes>
