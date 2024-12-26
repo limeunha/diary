@@ -2,11 +2,11 @@ import React from 'react'
 import { Container, Typography, Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
-const Home = () => {
+const WorryPage = () => {
    const navigate = useNavigate()
 
-   const handleGoToDiaryPage = () => {
-      navigate('/diary')
+   const handleGoToWorryPage = () => {
+      navigate('/worry-list')
    }
 
    return (
@@ -24,16 +24,18 @@ const Home = () => {
             width: '100%',
          }}
       >
-         <Typography variant="h4" align="center" gutterBottom style={{ fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif", color: 'green', fontSize: '70px', marginTop: '50px' }}>
-            쉿! 나만의 비밀일기 쓰기
+         <Typography variant="h4" align="center" gutterBottom style={{ fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif", color: 'green', fontSize: '70px', marginTop: '80px' }}>
+            <p style={{ color: 'green', fontSize: '30px', paddingBottom: '10px', paddingTop: '50px' }}>고민동산에서는 </p>
+            <p style={{ color: 'green', fontSize: '30px', paddingBottom: '10px' }}> 나랑 같은 고민을 하는 사람들과 이야기를 해봐요</p>
+            <p style={{ color: 'green', fontSize: '30px', paddingBottom: '10px' }}>짝사랑 (남자,여자) 이야기, 혼내주고싶은 사람이야기, </p>
+            <p style={{ color: 'green', fontSize: '30px', paddingBottom: '10px' }}>여행 이야기, 남자친구 or 여자친구에 대한 고민거리</p>
+            <p style={{ color: 'green', fontSize: '30px' }}>모든 주제의 고민거리를 이야기를 해봐요</p>
          </Typography>
-         <p style={{ color: 'green', fontSize: '30px', paddingBottom: '10px' }}>어렸을때 친구들과 비밀일기 써본적 있죠?</p>
-         <p style={{ color: 'green', fontSize: '30px' }}>아무도 모르게 우리들의 속마음을 적어봐요</p>
 
          <Button
             variant="outlined"
             color="primary"
-            onClick={handleGoToDiaryPage}
+            onClick={handleGoToWorryPage}
             sx={{
                fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
                color: 'green',
@@ -43,14 +45,14 @@ const Home = () => {
                padding: '12px 0',
                marginTop: '20px',
                borderRadius: '8px',
-               width: '200px',
+               width: '150px',
                height: '50px',
             }}
          >
-            비밀일기 작성하러 가기
+            고민동산 입장하기
          </Button>
       </Container>
    )
 }
 
-export default Home
+export default WorryPage

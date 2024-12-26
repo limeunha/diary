@@ -7,13 +7,13 @@ const Navbar = ({ isAuthenticated }) => {
          <Toolbar>
             <Typography variant="h6" style={{ flexGrow: 1 }}>
                <Link to="/" style={{ marginRight: '20px', textDecoration: 'none', color: 'green', fontSize: '20px' }}>
-                  ☆비밀일기☆
+                  비밀일기
                </Link>
                <Link to="/diary" style={{ marginRight: '20px', textDecoration: 'none', color: 'green', fontSize: '20px' }}>
-                  ☆비밀일기장☆
+                  비밀일기장
                </Link>
-               <Link to="/" style={{ marginRight: '20px', textDecoration: 'none', color: 'green', fontSize: '20px' }}>
-                  ☆고민동산☆
+               <Link to="/worry" style={{ marginRight: '20px', textDecoration: 'none', color: 'green', fontSize: '20px' }}>
+                  고민동산
                </Link>
             </Typography>
 
