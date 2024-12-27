@@ -31,8 +31,41 @@ const WorryWritePage = () => {
    }
 
    return (
-      <Container sx={{ paddingTop: '20px' }}>
-         <Typography variant="h4" align="center" gutterBottom>
+      <Container
+         sx={{
+            paddingTop: '20px',
+            '& .MuiInputBase-root': {
+               fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
+               color: 'green',
+            },
+            '& .MuiInputBase-input': {
+               fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
+               fontSize: '20px',
+               color: 'green',
+            },
+            '& .MuiOutlinedInput-root': {
+               borderRadius: '12px',
+               '& fieldset': {
+                  borderColor: 'red',
+               },
+               '&:hover fieldset': {
+                  borderColor: 'red',
+               },
+               '&.Mui-focused fieldset': {
+                  borderColor: 'red',
+               },
+            },
+            '& .MuiFormLabel-root': {
+               fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
+               fontSize: '20px',
+               color: 'green',
+            },
+            '& .MuiInputLabel-root.Mui-focused': {
+               color: 'green',
+            },
+         }}
+      >
+         <Typography variant="h4" align="center" gutterBottom sx={{ fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif", color: 'green' }}>
             다이어리 작성하기
          </Typography>
 

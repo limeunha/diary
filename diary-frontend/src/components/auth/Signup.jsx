@@ -35,14 +35,49 @@ const Signup = () => {
 
    if (isSignupComplete) {
       return (
-         <Container maxWidth="sm" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <Typography variant="h4" gutterBottom align="center">
+         <Container
+            maxWidth="sm"
+            style={{
+               display: 'flex',
+               flexDirection: 'column',
+               justifyContent: 'center',
+               alignItems: 'center',
+               height: '100vh',
+               fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
+               fontSize: '20px',
+               color: 'green',
+            }}
+         >
+            <Typography
+               variant="h4"
+               gutterBottom
+               align="center"
+               sx={{
+                  fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
+                  fontSize: '50px',
+                  color: 'green',
+                  display: 'block',
+               }}
+            >
                회원가입이 완료되었습니다!
             </Typography>
-            <Typography variant="body1" align="center" style={{ marginTop: '20px' }}>
-               로그인 페이지로 이동하거나 다른 작업을 계속 진행할 수 있습니다.
-            </Typography>
-            <Button variant="contained" color="primary" fullWidth style={{ marginTop: '20px', borderColor: 'red', color: 'green', backgroundColor: 'white' }} onClick={() => (window.location.href = '/login')}>
+            <Button
+               variant="outlined"
+               color="primary"
+               fullWidth
+               style={{
+                  position: 'relative',
+                  marginTop: '20px',
+                  fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
+                  fontSize: '20px',
+                  color: 'green',
+                  backgroundColor: 'white',
+                  border: '1px solid red',
+                  borderRadius: '12px',
+                  display: 'block',
+               }}
+               onClick={() => (window.location.href = '/login')}
+            >
                로그인 하러 가기
             </Button>
          </Container>
@@ -82,12 +117,15 @@ const Signup = () => {
                         borderRadius: '12px',
                         '& fieldset': {
                            borderColor: 'red',
+                           color: 'green',
                         },
                         '&:hover fieldset': {
                            borderColor: 'red',
+                           color: 'green',
                         },
                         '&.Mui-focused fieldset': {
                            borderColor: 'red',
+                           color: 'green',
                         },
                      },
                   }}
@@ -115,12 +153,15 @@ const Signup = () => {
                         borderRadius: '12px',
                         '& fieldset': {
                            borderColor: 'red',
+                           color: 'green',
                         },
                         '&:hover fieldset': {
                            borderColor: 'red',
+                           color: 'green',
                         },
                         '&.Mui-focused fieldset': {
                            borderColor: 'red',
+                           color: 'green',
                         },
                      },
                   }}
@@ -149,12 +190,15 @@ const Signup = () => {
                         borderRadius: '12px',
                         '& fieldset': {
                            borderColor: 'red',
+                           color: 'green',
                         },
                         '&:hover fieldset': {
                            borderColor: 'red',
+                           color: 'green',
                         },
                         '&.Mui-focused fieldset': {
                            borderColor: 'red',
+                           color: 'green',
                         },
                      },
                   }}
@@ -183,12 +227,15 @@ const Signup = () => {
                         borderRadius: '12px',
                         '& fieldset': {
                            borderColor: 'red',
+                           color: 'green',
                         },
                         '&:hover fieldset': {
                            borderColor: 'red',
+                           color: 'green',
                         },
                         '&.Mui-focused fieldset': {
                            borderColor: 'red',
+                           color: 'green',
                         },
                      },
                   }}

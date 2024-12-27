@@ -9,19 +9,19 @@ const cors = require('cors')
 
 // 라우터 및 기타 모듈 불러오기
 const indexRouter = require('./routes')
-const authRouter = require('./routes/auth')
-const diaryRouter = require('./routes/diary')
-const worryRouter = require('./routes/worry')
+const authRouter = require('./routes/auth') // authRouter 임포트
 const { sequelize } = require('./models')
 const passportConfig = require('./passport')
 
 const app = express()
 
+// Passport 설정
 passportConfig()
 
+// 서버 포트 설정
 app.set('port', process.env.PORT || 8002)
 
-// 시퀄라이즈를 사용한 DB연결
+// 시퀄라이즈 DB 연결
 sequelize
    .sync({ force: false })
    .then(() => {
@@ -61,11 +61,9 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session())
 
-// 라우터 등록
+// 라우터 설정
 app.use('/', indexRouter)
 app.use('/auth', authRouter)
-app.use('/diary', diaryRouter)
-app.use('/worry', worryRouter)
 
 // 잘못된 라우터 경로 처리
 app.use((req, res, next) => {
@@ -88,8 +86,7 @@ app.use((err, req, res, next) => {
    })
 })
 
-app.options('*', cors())
-
+// 서버 실행
 app.listen(app.get('port'), () => {
    console.log(`${app.get('port')} 번 포트에서 대기중`)
 })

@@ -1,18 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextField, Button, Typography, Container } from '@mui/material'
 
-const DiaryForm = ({ onSave }) => {
+const DiaryForm = ({ onSave, initialDiary }) => {
    const [diaryText, setDiaryText] = useState('')
    const [image, setImage] = useState(null)
+   const [imageName, setImageName] = useState('')
    const [date, setDate] = useState('')
+   const [title, setTitle] = useState('')
 
-   const handleDiaryChange = (event) => {
-      setDiaryText(event.target.value)
-   }
+   useEffect(() => {
+      if (initialDiary) {
+         setDiaryText(initialDiary.text || '')
+         setDate(initialDiary.date || '')
+         setImage(initialDiary.image || null)
+         setImageName(initialDiary.imageName || '')
+         setTitle(initialDiary.title || '')
+      } else {
+         setDiaryText('')
+         setDate('')
+         setImage(null)
+         setImageName('')
+         setTitle('')
+      }
+   }, [initialDiary])
 
-   const handleDateChange = (event) => {
-      setDate(event.target.value)
-   }
+   const handleDiaryChange = (event) => setDiaryText(event.target.value)
+   const handleDateChange = (event) => setDate(event.target.value)
+   const handleTitleChange = (event) => setTitle(event.target.value)
 
    const handleSaveDiary = () => {
       if (diaryText.trim() === '') {
@@ -24,11 +38,13 @@ const DiaryForm = ({ onSave }) => {
          return
       }
 
-      onSave(diaryText, date)
+      onSave(title, diaryText, date, image, imageName)
 
       setDiaryText('')
+      setTitle('')
       setDate('')
       setImage(null)
+      setImageName('')
    }
 
    const handleImageChange = (event) => {
@@ -36,34 +52,36 @@ const DiaryForm = ({ onSave }) => {
       if (file) {
          const imageUrl = URL.createObjectURL(file)
          setImage(imageUrl)
+         setImageName(file.name)
       }
    }
 
    const handleDeleteImage = () => {
       setImage(null)
+      setImageName('')
    }
 
    return (
       <Container maxWidth="md" sx={{ paddingTop: '20px', color: 'green', fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif" }}>
-         <Typography variant="h4" gutterBottom align="center" style={{ fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif", color: 'green' }}>
+         <Typography variant="h4" gutterBottom align="center" sx={{ fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif", color: 'green' }}>
             나만의 비밀일기
          </Typography>
 
-         {/* 날짜 입력 필드 */}
          <TextField
             type="date"
             value={date}
             onChange={handleDateChange}
             fullWidth
+            error={false}
+            helperText=""
             sx={{
                marginBottom: '20px',
-               '& .MuiInputBase-root': {
-                  fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
-                  color: 'green',
-               },
                '& .MuiInputBase-input': {
                   fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
                   fontSize: '20px',
+                  color: 'green',
+               },
+               '&:hover .MuiInputBase-input': {
                   color: 'green',
                },
                '& .MuiFormLabel-root': {
@@ -75,30 +93,79 @@ const DiaryForm = ({ onSave }) => {
                   borderRadius: '12px',
                   '& fieldset': {
                      borderColor: 'red',
+                     color: 'green',
                   },
                   '&:hover fieldset': {
                      borderColor: 'red',
+                     color: 'green',
                   },
                   '&.Mui-focused fieldset': {
                      borderColor: 'red',
+                     color: 'green',
                   },
                },
             }}
          />
+
          <TextField
-            label="비밀일기"
+            label="제목"
+            variant="outlined"
+            fullWidth
+            value={title}
+            onChange={handleTitleChange}
+            sx={{
+               marginBottom: '20px',
+               '& .MuiInputBase-input': {
+                  fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
+                  fontSize: '20px',
+                  color: 'green',
+               },
+               '&:hover .MuiInputBase-input': {
+                  color: 'green',
+               },
+               '& .MuiFormLabel-root': {
+                  fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
+                  fontSize: '20px',
+                  color: 'green',
+               },
+               '& .MuiOutlinedInput-root': {
+                  borderRadius: '12px',
+                  '& fieldset': {
+                     borderColor: 'red',
+                     color: 'green',
+                  },
+                  '&:hover fieldset': {
+                     borderColor: 'red',
+                     color: 'green',
+                  },
+                  '&.Mui-focused fieldset': {
+                     borderColor: 'red',
+                     color: 'green',
+                  },
+               },
+            }}
+         />
+
+         <TextField
+            label="비밀내용"
             multiline
             rows={10}
             fullWidth
             value={diaryText}
             onChange={handleDiaryChange}
+            error={false}
+            helperText=""
             sx={{
                marginBottom: '20px',
-               '& .MuiInputBase-root': {
+               '& .MuiInputBase-input': {
                   fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
+                  fontSize: '20px',
                   color: 'green',
                },
-               '& .MuiInputBase-input': {
+               '&:hover .MuiInputBase-input': {
+                  color: 'green',
+               },
+               '& .MuiFormLabel-root': {
                   fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
                   fontSize: '20px',
                   color: 'green',
@@ -107,30 +174,34 @@ const DiaryForm = ({ onSave }) => {
                   borderRadius: '12px',
                   '& fieldset': {
                      borderColor: 'red',
+                     color: 'green',
                   },
                   '&:hover fieldset': {
                      borderColor: 'red',
+                     color: 'green',
                   },
                   '&.Mui-focused fieldset': {
                      borderColor: 'red',
+                     color: 'green',
                   },
-               },
-               '& .MuiFormLabel-root': {
-                  fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
-                  fontSize: '20px',
-                  color: 'green',
-               },
-               '& .MuiInputLabel-root.Mui-focused': {
-                  color: 'green',
                },
             }}
          />
-         {/* 이미지 업로드 */}
-         <input type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'block', margin: '20px 0', fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif" }} />
 
-         {/* 이미지 삭제 버튼 */}
+         <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            style={{
+               display: 'block',
+               margin: '20px 0',
+               fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
+               color: 'green',
+            }}
+         />
+
          {image && (
-            <div style={{ position: 'relative', textAlign: 'center', marginTop: '10px' }}>
+            <div style={{ position: 'relative', textAlign: 'center', marginTop: '10px', padding: '10px', borderRadius: '8px' }}>
                <Button
                   variant="outlined"
                   color="secondary"
@@ -149,8 +220,10 @@ const DiaryForm = ({ onSave }) => {
                >
                   이미지 삭제
                </Button>
-
-               <img src={image} alt="Selected" style={{ width: '200px', height: 'auto', borderRadius: '8px' }} />
+               <img src={image} alt="Selected" style={{ width: '200px', height: 'auto', borderRadius: '8px', display: 'block', margin: '0 auto' }} />
+               <Typography variant="body2" sx={{ color: 'green', marginTop: '10px' }}>
+                  {imageName}
+               </Typography>
             </div>
          )}
 

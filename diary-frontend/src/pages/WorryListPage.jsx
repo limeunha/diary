@@ -66,12 +66,22 @@ const WorryListPage = () => {
             <Grid container spacing={3}>
                {worries.map((worry) => (
                   <Grid item xs={12} sm={6} md={4} key={worry.id}>
-                     <Card sx={{ height: '250px', display: 'flex', flexDirection: 'column' }}>
+                     <Card sx={{ height: '250px', display: 'flex', flexDirection: 'column', border: '1px solid red', textAlign: 'center' }}>
                         <CardContent>
-                           <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+                           <Typography
+                              variant="h6"
+                              component="div"
+                              sx={{
+                                 fontWeight: 'bold',
+                                 fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
+                                 color: 'green',
+                                 fontSize: '30px',
+                              }}
+                           >
                               {worry.title}
                            </Typography>
-                           <Typography variant="body2" color="text.secondary" sx={{ marginTop: '10px' }}>
+
+                           <Typography variant="body2" color="text.secondary" sx={{ marginTop: '10px', fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif", color: 'green', fontSize: '20px' }}>
                               {worry.content.length > 100 ? worry.content.substring(0, 100) + '...' : worry.content}
                            </Typography>
                         </CardContent>

@@ -50,10 +50,6 @@ const Login = () => {
             </div>
 
             <div style={{ flex: 2 }}>
-               {/* <Typography variant="h4" gutterBottom>
-                  로그인
-               </Typography> */}
-
                {error && (
                   <Typography color="error" align="center">
                      {error}

@@ -9,6 +9,7 @@ import WorryPage from './pages/WorryPage'
 import DiaryListPage from './pages/DiaryListPage'
 import WorryListPage from './pages/WorryListPage'
 import WorryWritePage from './pages/WorryWritePage'
+import DiaryEditPage from './pages/DiaryEditPage'
 
 function App() {
    return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/diary" element={<DiaryPage />} />
             <Route path="/diary-list" element={<DiaryListPage />} />
+            <Route path="/diaries/edit/:id" element={<DiaryEditPage />} />
             <Route path="/worry-list" element={<WorryListPage />} />
             <Route path="/worry-write" element={<WorryWritePage />} />
             <Route path="/worry" element={<WorryPage />} />

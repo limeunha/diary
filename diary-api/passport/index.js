@@ -11,6 +11,13 @@ module.exports = () => {
       User.findOne({
          where: { id },
          attributes: ['id', 'nick', 'email', 'createdAt', 'updatedAt'],
+         include: [
+            {
+               model: User,
+               as: 'Followings',
+               attributes: ['id', 'nick', 'email'],
+            },
+         ],
       })
          .then((user) => done(null, user))
          .catch((err) => done(err))
