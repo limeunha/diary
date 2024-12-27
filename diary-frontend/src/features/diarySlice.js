@@ -27,7 +27,7 @@ export const deleteDiaryThunk = createAsyncThunk('diary/deleteDiary', async (id,
    try {
       // eslint-disable-next-line
       const response = await deleteDiary(id)
-      return id // 삭제 성공 후 삭제된 일기의 id만 반환
+      return id
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '일기 삭제 실패')
    }
