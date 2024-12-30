@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchDiaryByIdThunk, updateDiaryThunk } from '../features/diarySlice'
@@ -14,13 +14,34 @@ const DiaryEditPage = () => {
    const loading = useSelector((state) => state.diary.loading)
    const error = useSelector((state) => state.diary.error)
 
+   const [formData, setFormData] = useState({
+      title: '',
+      diaryText: '',
+      date: '',
+      image: null,
+      imageName: '',
+   })
+
    useEffect(() => {
       if (id) {
          dispatch(fetchDiaryByIdThunk(id))
       }
    }, [dispatch, id])
 
-   const handleSave = (title, diaryText, date, image, imageName) => {
+   useEffect(() => {
+      if (diary) {
+         setFormData({
+            title: diary.title,
+            diaryText: diary.text,
+            date: diary.date,
+            image: diary.image,
+            imageName: diary.imageName,
+         })
+      }
+   }, [diary])
+
+   const handleSave = () => {
+      const { title, diaryText, date, image, imageName } = formData
       if (id) {
          dispatch(updateDiaryThunk({ id, diaryData: { title, diaryText, date, image, imageName } }))
             .unwrap()
@@ -51,7 +72,7 @@ const DiaryEditPage = () => {
          <Typography variant="h4" gutterBottom align="center">
             일기 수정
          </Typography>
-         <DiaryForm onSave={handleSave} initialDiary={diary} />
+         <DiaryForm formData={formData} setFormData={setFormData} onSave={handleSave} />
       </Container>
    )
 }

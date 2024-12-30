@@ -8,8 +8,12 @@ const WorryListPage = () => {
 
    useEffect(() => {
       const fetchWorries = () => {
-         const savedWorries = JSON.parse(localStorage.getItem('worries')) || []
-         setWorries(savedWorries)
+         try {
+            const savedWorries = JSON.parse(localStorage.getItem('worries')) || []
+            setWorries(savedWorries)
+         } catch (error) {
+            console.error('Failed to load worries from localStorage', error)
+         }
       }
 
       fetchWorries()
@@ -19,6 +23,10 @@ const WorryListPage = () => {
       const updatedWorries = worries.filter((worry) => worry.id !== id)
       setWorries(updatedWorries)
       localStorage.setItem('worries', JSON.stringify(updatedWorries))
+   }
+
+   const editWorry = (id) => {
+      navigate(`/worry-edit/${id}`)
    }
 
    return (
@@ -78,7 +86,7 @@ const WorryListPage = () => {
                                  fontSize: '30px',
                               }}
                            >
-                              {worry.title}
+                              제목 : {worry.title}
                            </Typography>
 
                            <Typography variant="body2" color="text.secondary" sx={{ marginTop: '10px', fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif", color: 'green', fontSize: '20px' }}>
@@ -96,7 +104,7 @@ const WorryListPage = () => {
                         >
                            <Button
                               component={Link}
-                              to={`/worry/${worry.id}`}
+                              to={`/worry-comment/${worry.id}`}
                               variant="outlined"
                               sx={{
                                  fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
@@ -107,8 +115,24 @@ const WorryListPage = () => {
                                  marginRight: '10px',
                               }}
                            >
-                              더 보기
+                              고민 나누기
                            </Button>
+
+                           <Button
+                              variant="outlined"
+                              onClick={() => editWorry(worry.id)}
+                              sx={{
+                                 fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
+                                 backgroundColor: 'white',
+                                 color: 'green',
+                                 border: '1px solid red',
+                                 flex: 1,
+                                 marginRight: '10px',
+                              }}
+                           >
+                              수정
+                           </Button>
+
                            <Button
                               variant="outlined"
                               onClick={() => deleteWorry(worry.id)}

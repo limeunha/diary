@@ -13,6 +13,8 @@ import DiaryEditPage from './pages/DiaryEditPage'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { checkAuthStatusThunk } from './features/authSlice'
+import WorryCommentPage from './pages/WorrryCommentPage'
+import WorryEditPage from './pages/WorryEditPage'
 
 function App() {
    const dispatch = useDispatch()
@@ -30,8 +32,10 @@ function App() {
             <Route path="/diary" element={<DiaryPage />} />
             <Route path="/diary-list" element={<DiaryListPage />} />
             <Route path="/diaries/edit/:id" element={<DiaryEditPage />} />
+            <Route path="/worry-edit/:id" element={<WorryEditPage />} />
             <Route path="/worry-list" element={<WorryListPage />} />
             <Route path="/worry-write" element={<WorryWritePage />} />
+            <Route path="/worry-comment/:id" element={<WorryCommentPage />} />
             <Route path="/worry" element={<WorryPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />

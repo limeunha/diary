@@ -9,7 +9,7 @@ const cors = require('cors')
 
 // 라우터 및 기타 모듈 불러오기
 const indexRouter = require('./routes')
-const authRouter = require('./routes/auth') // authRouter 임포트
+const authRouter = require('./routes/auth')
 const { sequelize } = require('./models')
 const passportConfig = require('./passport')
 
