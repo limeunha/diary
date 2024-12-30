@@ -112,7 +112,7 @@ const WorryCommentPage = () => {
             {worry.comments && (
                <Box sx={{ marginTop: '20px', color: 'green', fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif" }}>
                   <Typography variant="h6" sx={{ fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif", fontSize: '25px', fontWeight: 'bold' }}>
-                     코멘트 목록
+                     코멘트
                   </Typography>
 
                   <Box sx={{ marginTop: '20px', fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif" }}>
