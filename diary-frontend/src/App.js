@@ -10,13 +10,23 @@ import DiaryListPage from './pages/DiaryListPage'
 import WorryListPage from './pages/WorryListPage'
 import WorryWritePage from './pages/WorryWritePage'
 import DiaryEditPage from './pages/DiaryEditPage'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { checkAuthStatusThunk } from './features/authSlice'
 
 function App() {
+   const dispatch = useDispatch()
+   const { isAuthenticated, user } = useSelector((state) => state.auth)
+
+   useEffect(() => {
+      dispatch(checkAuthStatusThunk())
+   }, [dispatch])
+
    return (
       <>
-         <Navbar />
+         <Navbar isAuthenticated={isAuthenticated} user={user} />
          <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home isAuthenticated={isAuthenticated} user={user} />} />
             <Route path="/diary" element={<DiaryPage />} />
             <Route path="/diary-list" element={<DiaryListPage />} />
             <Route path="/diaries/edit/:id" element={<DiaryEditPage />} />
