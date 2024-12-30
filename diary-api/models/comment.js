@@ -1,11 +1,11 @@
 const Sequelize = require('sequelize')
 
-module.exports = class Worry extends Sequelize.Model {
+module.exports = class Comment extends Sequelize.Model {
    static init(sequelize) {
       return super.init(
          {
-            title: {
-               type: Sequelize.STRING(255),
+            nick: {
+               type: Sequelize.STRING(15),
                allowNull: false,
             },
             content: {
@@ -25,8 +25,8 @@ module.exports = class Worry extends Sequelize.Model {
             sequelize,
             timestamps: true,
             underscored: false,
-            modelName: 'Worry',
-            tableName: 'Worries',
+            modelName: 'Comment',
+            tableName: 'Comments',
             paranoid: true,
             charset: 'utf8mb4',
             collate: 'utf8mb4_general_ci',
@@ -34,5 +34,7 @@ module.exports = class Worry extends Sequelize.Model {
       )
    }
 
-   static associate(db) {}
+   static associate(db) {
+      this.belongsTo(db.User, { foreignKey: 'authorId', targetKey: 'id' })
+   }
 }

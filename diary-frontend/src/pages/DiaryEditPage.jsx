@@ -1,79 +1,61 @@
-import React, { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchDiaryByIdThunk, updateDiaryThunk } from '../features/diarySlice'
-import DiaryForm from '../components/diary/DiaryForm'
-import { CircularProgress, Typography, Container } from '@mui/material'
+import { useEffect, useState } from 'react'
 
-const DiaryEditPage = () => {
+function DiaryEditPage() {
    const { id } = useParams()
    const dispatch = useDispatch()
-   const navigate = useNavigate()
+   const { diary, loading, error } = useSelector((state) => state.diary)
 
-   const diary = useSelector((state) => state.diary.diary)
-   const loading = useSelector((state) => state.diary.loading)
-   const error = useSelector((state) => state.diary.error)
-
-   const [formData, setFormData] = useState({
+   const [updatedDiary, setUpdatedDiary] = useState({
       title: '',
-      diaryText: '',
-      date: '',
-      image: null,
-      imageName: '',
+      content: '',
    })
 
+   // 일기 데이터를 불러오기
    useEffect(() => {
       if (id) {
          dispatch(fetchDiaryByIdThunk(id))
       }
-   }, [dispatch, id])
+   }, [id, dispatch])
 
+   // 데이터 로드 후 수정 폼에 데이터 채우기
    useEffect(() => {
       if (diary) {
-         setFormData({
+         setUpdatedDiary({
             title: diary.title,
-            diaryText: diary.text,
-            date: diary.date,
-            image: diary.image,
-            imageName: diary.imageName,
+            content: diary.content,
          })
       }
    }, [diary])
 
-   const handleSave = () => {
-      const { title, diaryText, date, image, imageName } = formData
+   // 수정 처리
+   const handleSubmit = (e) => {
+      e.preventDefault()
       if (id) {
-         dispatch(updateDiaryThunk({ id, diaryData: { title, diaryText, date, image, imageName } }))
-            .unwrap()
-            .then(() => {
-               navigate('/diary-list')
-            })
-            .catch((error) => {
-               console.error('일기 수정 중 오류 발생:', error)
-               alert('일기 수정에 실패했습니다.')
-            })
+         dispatch(updateDiaryThunk({ id, updatedDiary }))
       }
    }
 
-   if (loading) return <CircularProgress />
-
-   if (error) return <Typography color="error">에러 발생: {error}</Typography>
-
-   if (!diary) {
-      return (
-         <Typography variant="h6" color="textSecondary">
-            일기 데이터를 불러오는 중입니다. 잠시만 기다려 주세요.
-         </Typography>
-      )
-   }
+   if (loading) return <div>로딩 중...</div>
+   if (error) return <div>{error}</div>
 
    return (
-      <Container maxWidth="md">
-         <Typography variant="h4" gutterBottom align="center">
-            일기 수정
-         </Typography>
-         <DiaryForm formData={formData} setFormData={setFormData} onSave={handleSave} />
-      </Container>
+      <div>
+         <h2>일기 수정</h2>
+         <form onSubmit={handleSubmit}>
+            <div>
+               <label htmlFor="title">제목</label>
+               <input type="text" id="title" value={updatedDiary.title} onChange={(e) => setUpdatedDiary({ ...updatedDiary, title: e.target.value })} />
+            </div>
+            <div>
+               <label htmlFor="content">내용</label>
+               <textarea id="content" value={updatedDiary.content} onChange={(e) => setUpdatedDiary({ ...updatedDiary, content: e.target.value })} />
+            </div>
+            <button type="submit">수정하기</button>
+         </form>
+      </div>
    )
 }
 

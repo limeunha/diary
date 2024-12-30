@@ -4,17 +4,17 @@ module.exports = class User extends Sequelize.Model {
    static init(sequelize) {
       return super.init(
          {
+            name: {
+               type: Sequelize.STRING(100),
+               allowNull: false,
+            },
             email: {
-               type: Sequelize.STRING(40),
+               type: Sequelize.STRING(100),
                allowNull: false,
                unique: true,
             },
-            nick: {
-               type: Sequelize.STRING(15),
-               allowNull: false,
-            },
             password: {
-               type: Sequelize.STRING(100),
+               type: Sequelize.STRING(255),
                allowNull: false,
             },
          },
@@ -30,5 +30,8 @@ module.exports = class User extends Sequelize.Model {
          }
       )
    }
-   static associate(db) {}
+
+   static associate(db) {
+      this.hasMany(db.Diary, { foreignKey: 'authorId', sourceKey: 'id' })
+   }
 }

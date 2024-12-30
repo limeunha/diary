@@ -4,7 +4,7 @@ const config = require('../config/config')[env]
 
 const User = require('./user')
 const Diary = require('./diary')
-const Worry = require('./worry')
+const Comment = require('./comment')
 
 const db = {}
 const sequelize = new Sequelize(config.database, config.username, config.password, config)
@@ -12,14 +12,14 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 db.sequelize = sequelize
 db.User = User
 db.Diary = Diary
-db.Worry = Worry
+db.Comment = Comment
 
 User.init(sequelize)
 Diary.init(sequelize)
-Worry.init(sequelize)
+Comment.init(sequelize)
 
 User.associate(db)
 Diary.associate(db)
-Worry.associate(db)
+Comment.associate(db)
 
 module.exports = db

@@ -10,6 +10,7 @@ const cors = require('cors')
 // 라우터 및 기타 모듈 불러오기
 const indexRouter = require('./routes')
 const authRouter = require('./routes/auth')
+const diaryRouter = require('./routes/diary')
 const { sequelize } = require('./models')
 const passportConfig = require('./passport')
 
@@ -38,7 +39,7 @@ app.use(
       credentials: true,
    })
 )
-app.use(morgan('dev'))
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'))
 app.use(express.static(path.join(__dirname, 'uploads')))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -64,6 +65,7 @@ app.use(passport.session())
 // 라우터 설정
 app.use('/', indexRouter)
 app.use('/auth', authRouter)
+app.use('/diary', diaryRouter)
 
 // 잘못된 라우터 경로 처리
 app.use((req, res, next) => {
@@ -77,7 +79,7 @@ app.use((err, req, res, next) => {
    const statusCode = err.status || 500
    const errorMessage = err.message || '서버 내부 오류'
 
-   console.log(err)
+   console.error(err)
 
    res.status(statusCode).json({
       success: false,

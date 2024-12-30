@@ -31,12 +31,9 @@ const DiaryListPage = () => {
    }
 
    const getPreviewText = (text) => {
-      console.log('Diary text:', text)
-
       if (!text || text.trim() === '') {
          return '내용 없음'
       }
-
       return text.length > 100 ? text.substring(0, 100) + '...' : text
    }
 
