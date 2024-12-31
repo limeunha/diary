@@ -17,7 +17,7 @@ function DiaryEditPage() {
    // 일기 데이터를 불러오기
    useEffect(() => {
       if (id) {
-         dispatch(fetchDiaryByIdThunk(id))
+         dispatch(fetchDiaryByIdThunk(id)) // 일기 데이터를 불러오기
       }
    }, [id, dispatch])
 
@@ -38,8 +38,10 @@ function DiaryEditPage() {
 
       if (id) {
          try {
-            await dispatch(updateDiaryThunk({ id, updatedDiary }))
+            await dispatch(updateDiaryThunk({ id, updatedDiary })) // 일기 수정
+            // 수정 성공 후 처리 (예: 리디렉션, 알림 등)
          } catch (error) {
+            console.error('일기 수정 중 오류 발생:', error)
          } finally {
             setIsSubmitting(false)
          }

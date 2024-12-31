@@ -6,14 +6,12 @@ const { Diary } = require('../models')
 const { isLoggedIn } = require('./middlewares')
 const router = express.Router()
 
-// 업로드 디렉토리 확인 및 생성
-const uploadDir = path.join(__dirname, 'uploads')
+const uploadDir = path.join(__dirname, '../uploads')
 if (!fs.existsSync(uploadDir)) {
    console.log('uploads 폴더가 없어 uploads 폴더를 생성합니다.')
    fs.mkdirSync(uploadDir)
 }
 
-// multer 설정
 const upload = multer({
    storage: multer.diskStorage({
       destination(req, file, cb) {
@@ -29,26 +27,21 @@ const upload = multer({
    limits: { fileSize: 5 * 1024 * 1024 },
 })
 
-// 이미지 경로 제공 (static 파일로 서비스)
-router.use('/uploads', express.static(uploadDir))
+router.use('/uploads', express.static(path.join(__dirname, '../uploads')))
 
-// 다이어리 생성 API
 router.post('/', isLoggedIn, upload.single('img'), async (req, res) => {
    console.log('Logged in user:', req.user)
    console.log('Uploaded file:', req.file)
 
    try {
-      // 이미지 파일이 없으면 에러 처리
       if (!req.file) {
          return res.status(400).json({ success: false, message: '파일 업로드에 실패했습니다.' })
       }
 
-      // 로그인된 사용자 정보 확인
       if (!req.user) {
          return res.status(401).json({ success: false, message: '로그인 정보가 없습니다.' })
       }
 
-      // 다이어리 데이터 생성
       const diary = await Diary.create({
          title: req.body.title,
          content: req.body.content,
@@ -56,7 +49,6 @@ router.post('/', isLoggedIn, upload.single('img'), async (req, res) => {
          img: `/uploads/${req.file.filename}`,
       })
 
-      // 성공적인 응답
       res.json({
          success: true,
          diary: {
@@ -74,7 +66,6 @@ router.post('/', isLoggedIn, upload.single('img'), async (req, res) => {
    }
 })
 
-// 다이어리 수정 API
 router.put('/:id', isLoggedIn, upload.single('img'), async (req, res) => {
    try {
       const diary = await Diary.findOne({ where: { id: req.params.id, authorId: req.user.id } })
@@ -87,7 +78,6 @@ router.put('/:id', isLoggedIn, upload.single('img'), async (req, res) => {
          content: req.body.content,
       }
 
-      // 이미지가 업로드된 경우, 새 이미지 경로로 업데이트
       if (req.file) {
          updatedData.img = `/uploads/${req.file.filename}`
       }
@@ -105,7 +95,6 @@ router.put('/:id', isLoggedIn, upload.single('img'), async (req, res) => {
    }
 })
 
-// 다이어리 조회 API
 router.get('/:id', async (req, res) => {
    try {
       const diary = await Diary.findByPk(req.params.id)
@@ -125,7 +114,6 @@ router.get('/:id', async (req, res) => {
    }
 })
 
-// 다이어리 목록 조회 API
 router.get('/', async (req, res) => {
    try {
       const page = parseInt(req.query.page, 10) || 1
