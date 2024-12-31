@@ -1,25 +1,36 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Typography, List, ListItem, Button, Card, CardContent, CardActions } from '@mui/material'
 import { useLocation, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const DiaryListPage = () => {
    const location = useLocation()
-   const { diaries } = location.state || []
+   const { diaries = [] } = location.state || {}
    const navigate = useNavigate()
 
    const [updatedDiaries, setUpdatedDiaries] = useState(diaries)
 
    useEffect(() => {
-      if (!diaries) {
+      if (diaries.length === 0) {
          console.log('No diaries found in location.state')
       } else {
          console.log('Diaries:', diaries)
       }
    }, [diaries])
 
-   const handleDeleteDiary = (id) => {
-      const newDiaries = updatedDiaries.filter((diary) => diary.id !== id)
-      setUpdatedDiaries(newDiaries)
+   const handleDeleteDiary = async (id) => {
+      try {
+         const response = await axios.delete(`/api/diaries/${id}`)
+
+         if (response.status === 200) {
+            const newDiaries = updatedDiaries.filter((diary) => diary.id !== id)
+            setUpdatedDiaries(newDiaries)
+            alert('일기가 삭제되었습니다.')
+         }
+      } catch (error) {
+         console.error('Error deleting diary:', error)
+         alert('일기 삭제에 실패했습니다.')
+      }
    }
 
    const handleGoBack = () => {

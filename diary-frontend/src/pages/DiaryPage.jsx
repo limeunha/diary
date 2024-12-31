@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Typography, Button, Box } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import DiaryForm from '../components/diary/DiaryForm'
@@ -7,13 +7,28 @@ const DiaryPage = () => {
    const [diaries, setDiaries] = useState([])
    const navigate = useNavigate()
 
+   useEffect(() => {
+      const storedDiaries = JSON.parse(localStorage.getItem('diaries')) || []
+      setDiaries(storedDiaries)
+   }, [])
+
    const handleSaveDiary = (diaryText) => {
       if (diaryText.trim() === '') {
          alert('일기 내용을 작성해주세요.')
          return
       }
 
-      setDiaries([...diaries, { id: diaries.length + 1, text: diaryText, date: new Date().toLocaleDateString() }])
+      const newDiary = {
+         id: diaries.length + 1,
+         text: diaryText,
+         date: new Date().toLocaleDateString(),
+      }
+
+      const updatedDiaries = [...diaries, newDiary]
+
+      setDiaries(updatedDiaries)
+
+      localStorage.setItem('diaries', JSON.stringify(updatedDiaries))
 
       alert('일기가 성공적으로 저장되었습니다!')
    }
