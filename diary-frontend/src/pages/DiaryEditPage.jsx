@@ -12,6 +12,7 @@ function DiaryEditPage() {
       title: '',
       content: '',
    })
+   const [isSubmitting, setIsSubmitting] = useState(false)
 
    // 일기 데이터를 불러오기
    useEffect(() => {
@@ -31,15 +32,22 @@ function DiaryEditPage() {
    }, [diary])
 
    // 수정 처리
-   const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
       e.preventDefault()
+      setIsSubmitting(true)
+
       if (id) {
-         dispatch(updateDiaryThunk({ id, updatedDiary }))
+         try {
+            await dispatch(updateDiaryThunk({ id, updatedDiary }))
+         } catch (error) {
+         } finally {
+            setIsSubmitting(false)
+         }
       }
    }
 
    if (loading) return <div>로딩 중...</div>
-   if (error) return <div>{error}</div>
+   if (error) return <div>일기 데이터를 불러오는 중 오류가 발생했습니다: {error}</div>
 
    return (
       <div>
@@ -53,7 +61,9 @@ function DiaryEditPage() {
                <label htmlFor="content">내용</label>
                <textarea id="content" value={updatedDiary.content} onChange={(e) => setUpdatedDiary({ ...updatedDiary, content: e.target.value })} />
             </div>
-            <button type="submit">수정하기</button>
+            <button type="submit" disabled={isSubmitting}>
+               {isSubmitting ? '수정 중...' : '수정하기'}
+            </button>
          </form>
       </div>
    )

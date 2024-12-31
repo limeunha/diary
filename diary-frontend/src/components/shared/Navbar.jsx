@@ -21,7 +21,7 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
                <>
                   <Link to="/my" style={{ textDecoration: 'none' }}>
                      <Typography variant="body1" sx={{ marginRight: '20px', color: 'white', fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif", fontSize: '20px' }}>
-                        {user?.nick}님
+                        {user?.name}님
                      </Typography>
                   </Link>
                   <Button onClick={onLogout} variant="outlined" sx={{ color: 'white', borderColor: 'white', fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif", fontSize: '15px' }}>

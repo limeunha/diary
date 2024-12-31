@@ -2,18 +2,20 @@ import { TextField, Button, Container, Typography, CircularProgress } from '@mui
 import { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUserThunk } from '../../features/authSlice'
+import { useNavigate } from 'react-router-dom'
 
 const Signup = () => {
    const [email, setEmail] = useState('')
-   const [nick, setNick] = useState('')
+   const [name, setName] = useState('')
    const [password, setPassword] = useState('')
    const [confirmPassword, setConfirmPassword] = useState('')
    const [isSignupComplete, setIsSignupComplete] = useState(false)
    const dispatch = useDispatch()
    const { loading, error } = useSelector((state) => state.auth)
+   const navigate = useNavigate()
 
    const handleSignup = useCallback(() => {
-      if (!email.trim() || !nick.trim() || !password.trim() || !confirmPassword.trim()) {
+      if (!email.trim() || !name.trim() || !password.trim() || !confirmPassword.trim()) {
          alert('모든 필드를 입력해주세요!')
          return
       }
@@ -23,7 +25,13 @@ const Signup = () => {
          return
       }
 
-      dispatch(registerUserThunk({ email, nick, password }))
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(email)) {
+         alert('올바른 이메일을 입력해주세요!')
+         return
+      }
+
+      dispatch(registerUserThunk({ email, name, password }))
          .unwrap()
          .then(() => {
             setIsSignupComplete(true)
@@ -31,7 +39,7 @@ const Signup = () => {
          .catch((error) => {
             console.error('회원가입 에러:', error)
          })
-   }, [email, nick, password, confirmPassword, dispatch])
+   }, [email, name, password, confirmPassword, dispatch])
 
    if (isSignupComplete) {
       return (
@@ -76,7 +84,7 @@ const Signup = () => {
                   borderRadius: '12px',
                   display: 'block',
                }}
-               onClick={() => (window.location.href = '/login')}
+               onClick={() => navigate('/login')}
             >
                로그인 하러 가기
             </Button>
@@ -134,7 +142,7 @@ const Signup = () => {
                />
 
                <TextField
-                  label="닉네임"
+                  label="이름"
                   variant="outlined"
                   fullWidth
                   margin="normal"
@@ -165,8 +173,8 @@ const Signup = () => {
                         },
                      },
                   }}
-                  value={nick}
-                  onChange={(e) => setNick(e.target.value)}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                />
 
                <TextField

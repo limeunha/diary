@@ -21,7 +21,7 @@ module.exports = class Diary extends Sequelize.Model {
                },
             },
             img: {
-               type: Sequelize.STRING(200),
+               type: Sequelize.STRING(255),
                allowNull: true,
             },
          },

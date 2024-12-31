@@ -35,7 +35,7 @@ sequelize
 // 미들웨어 설정
 app.use(
    cors({
-      origin: 'http://localhost:3000',
+      origin: process.env.NODE_ENV === 'production' ? 'https://your-production-url.com' : 'http://localhost:3000',
       credentials: true,
    })
 )
@@ -58,7 +58,6 @@ app.use(
    })
 )
 
-// Passport 초기화 및 세션 연동
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -79,7 +78,7 @@ app.use((err, req, res, next) => {
    const statusCode = err.status || 500
    const errorMessage = err.message || '서버 내부 오류'
 
-   console.error(err)
+   console.error('에러 로그:', err)
 
    res.status(statusCode).json({
       success: false,

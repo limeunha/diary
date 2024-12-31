@@ -1,6 +1,6 @@
 const passport = require('passport')
 const local = require('./localStrategy')
-const User = require('../models/user')
+const { User } = require('../models')
 
 module.exports = () => {
    passport.serializeUser((user, done) => {
@@ -16,6 +16,7 @@ module.exports = () => {
                model: User,
                as: 'Followings',
                attributes: ['id', 'nick', 'email'],
+               through: { attributes: [] },
             },
          ],
       })

@@ -6,9 +6,11 @@ const User = require('../models/user')
 
 const router = express.Router()
 
+// 회원가입
 router.post('/join', isNotLoggedIn, async (req, res, next) => {
-   const { email, nick, password } = req.body
+   const { name, email, password } = req.body
    try {
+      // 이미 이메일로 존재하는 사용자가 있는지 확인
       const exUser = await User.findOne({ where: { email } })
 
       if (exUser) {
@@ -18,11 +20,13 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
          })
       }
 
+      // 비밀번호 해싱
       const hash = await bcrypt.hash(password, 12)
 
+      // 새 사용자 생성
       const newUser = await User.create({
+         name,
          email,
-         nick,
          password: hash,
       })
 
@@ -31,8 +35,8 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
          message: '사용자가 성공적으로 등록되었습니다.',
          user: {
             id: newUser.id,
+            name: newUser.name,
             email: newUser.email,
-            nick: newUser.nick,
          },
       })
    } catch (error) {
@@ -45,6 +49,7 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
    }
 })
 
+// 로그인
 router.post('/login', isNotLoggedIn, async (req, res, next) => {
    passport.authenticate('local', (authError, user, info) => {
       if (authError) {
@@ -67,13 +72,15 @@ router.post('/login', isNotLoggedIn, async (req, res, next) => {
             message: '로그인 성공',
             user: {
                id: user.id,
-               nick: user.nick,
+               name: user.name,
+               email: user.email,
             },
          })
       })
    })(req, res, next)
 })
 
+// 로그아웃
 router.get('/logout', isLoggedIn, async (req, res, next) => {
    req.logout((err) => {
       if (err) {
@@ -92,13 +99,15 @@ router.get('/logout', isLoggedIn, async (req, res, next) => {
    })
 })
 
+// 로그인 상태 확인
 router.get('/status', async (req, res, next) => {
    if (req.isAuthenticated()) {
       res.json({
          isAuthenticated: true,
          user: {
             id: req.user.id,
-            nick: req.user.nick,
+            name: req.user.name,
+            email: req.user.email,
          },
       })
    } else {
