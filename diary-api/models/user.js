@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const bcrypt = require('bcrypt')
 
 module.exports = class User extends Sequelize.Model {
    static init(sequelize) {
@@ -32,6 +33,6 @@ module.exports = class User extends Sequelize.Model {
    }
 
    static associate(db) {
-      this.hasMany(db.Diary, { foreignKey: 'authorId', sourceKey: 'id' })
+      db.User.hasMany(db.Diary)
    }
 }

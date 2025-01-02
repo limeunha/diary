@@ -2,35 +2,51 @@ import React, { useState, useEffect } from 'react'
 import { Container, Typography, Button, Box } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import DiaryForm from '../components/diary/DiaryForm'
+import axios from 'axios'
 
 const DiaryPage = () => {
    const [diaries, setDiaries] = useState([])
    const navigate = useNavigate()
 
+   // 일기 목록 가져오기
    useEffect(() => {
-      const storedDiaries = JSON.parse(localStorage.getItem('diaries')) || []
-      setDiaries(storedDiaries)
+      const fetchDiaries = async () => {
+         try {
+            const response = await axios.get('http://localhost:5000/api/diaries')
+            setDiaries(response.data.diaries)
+         } catch (error) {
+            console.error('일기를 가져오는 데 실패했습니다.', error)
+         }
+      }
+
+      fetchDiaries()
    }, [])
 
-   const handleSaveDiary = (diaryText) => {
+   // 일기 저장 함수
+   const handleSaveDiary = async (diaryText) => {
       if (diaryText.trim() === '') {
          alert('일기 내용을 작성해주세요.')
          return
       }
 
       const newDiary = {
-         id: diaries.length + 1,
          text: diaryText,
          date: new Date().toLocaleDateString(),
       }
 
-      const updatedDiaries = [...diaries, newDiary]
+      try {
+         // 백엔드 API로 일기 데이터를 전송
+         const response = await axios.post('http://localhost:5000/api/diaries', newDiary)
+         const savedDiary = response.data.diary
 
-      setDiaries(updatedDiaries)
+         // 일기 목록에 추가
+         setDiaries([...diaries, savedDiary])
 
-      localStorage.setItem('diaries', JSON.stringify(updatedDiaries))
-
-      alert('일기가 성공적으로 저장되었습니다!')
+         alert('일기가 성공적으로 저장되었습니다!')
+      } catch (error) {
+         console.error('일기 저장에 실패했습니다.', error)
+         alert('일기 저장에 실패했습니다.')
+      }
    }
 
    const handleGoToDiaryList = () => {

@@ -7,21 +7,21 @@ module.exports = () => {
       done(null, user.id)
    })
 
-   passport.deserializeUser((id, done) => {
-      User.findOne({
-         where: { id },
-         attributes: ['id', 'nick', 'email', 'createdAt', 'updatedAt'],
-         include: [
-            {
-               model: User,
-               as: 'Followings',
-               attributes: ['id', 'nick', 'email'],
-               through: { attributes: [] },
-            },
-         ],
-      })
-         .then((user) => done(null, user))
-         .catch((err) => done(err))
+   passport.deserializeUser(async (id, done) => {
+      try {
+         const user = await User.findOne({
+            where: { id },
+            attributes: ['id', 'name', 'email', 'createdAt', 'updatedAt'],
+         })
+
+         if (!user) {
+            return done(new Error('User not found'), null)
+         }
+
+         return done(null, user)
+      } catch (err) {
+         return done(err, null)
+      }
    })
 
    local()

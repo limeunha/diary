@@ -12,14 +12,6 @@ module.exports = class Diary extends Sequelize.Model {
                type: Sequelize.TEXT,
                allowNull: false,
             },
-            authorId: {
-               type: Sequelize.INTEGER,
-               allowNull: false,
-               references: {
-                  model: 'Users',
-                  key: 'id',
-               },
-            },
             img: {
                type: Sequelize.STRING(255),
                allowNull: true,
@@ -39,6 +31,6 @@ module.exports = class Diary extends Sequelize.Model {
    }
 
    static associate(db) {
-      this.belongsTo(db.User, { foreignKey: 'authorId', targetKey: 'id' })
+      db.Diary.belongsTo(db.User)
    }
 }
