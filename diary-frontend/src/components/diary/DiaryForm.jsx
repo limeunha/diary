@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { TextField, Button, Typography, Container } from '@mui/material'
 
-const DiaryForm = ({ onSave, initialDiary }) => {
-   const [diaryText, setDiaryText] = useState('')
+const DiaryForm = ({ onSubmit, initialDiary }) => {
+   const [content, setContent] = useState('')
+   const [imgFile, setImgFile] = useState(null) // 이미지 파일 객체
    const [image, setImage] = useState(null)
    const [imageName, setImageName] = useState('')
    const [date, setDate] = useState('')
@@ -10,13 +11,13 @@ const DiaryForm = ({ onSave, initialDiary }) => {
 
    useEffect(() => {
       if (initialDiary) {
-         setDiaryText(initialDiary.text || '')
+         setContent(initialDiary.text || '')
          setDate(initialDiary.date || '')
          setImage(initialDiary.image || null)
          setImageName(initialDiary.imageName || '')
          setTitle(initialDiary.title || '')
       } else {
-         setDiaryText('')
+         setContent('')
          setDate('')
          setImage(null)
          setImageName('')
@@ -24,32 +25,51 @@ const DiaryForm = ({ onSave, initialDiary }) => {
       }
    }, [initialDiary])
 
-   const handleDiaryChange = (event) => setDiaryText(event.target.value)
+   const handleDiaryChange = (event) => setContent(event.target.value)
    const handleDateChange = (event) => setDate(event.target.value)
    const handleTitleChange = (event) => setTitle(event.target.value)
 
-   const handleSaveDiary = () => {
-      if (diaryText.trim() === '') {
+   const handleSubmitDiary = () => {
+      if (content.trim() === '') {
          alert('일기를 작성해주세요!')
          return
       }
-      if (date === '') {
-         alert('날짜를 선택해주세요!')
-         return
+      // if (date === '') {
+      //    alert('날짜를 선택해주세요!')
+      //    return
+      // }
+
+      const formData = new FormData() //폼 데이터를 쉽게 생성하고 전송할 수 있도록 하는 객체
+      formData.append('content', content)
+      formData.append('title', title)
+      // formData.append('date', date)
+
+      // 내용만 수정할때 에러 방지
+      if (imgFile) {
+         // 파일명 인코딩(한글 파일명 깨짐 방지)
+         const encodedFile = new File([imgFile], encodeURIComponent(imgFile.name), { type: imgFile.type })
+
+         formData.append('img', encodedFile) //이미지 파일 추가
       }
 
-      onSave(title, diaryText, date, image, imageName)
+      if (typeof onSubmit === 'function') {
+         onSubmit(formData)
+      } else {
+         console.error('실패했습니다.')
+      }
 
-      setDiaryText('')
+      setContent('')
       setTitle('')
-      setDate('')
+      // setDate('')
       setImage(null)
-      setImageName('')
+      // setImageName('')
    }
 
    const handleImageChange = (event) => {
       const file = event.target.files[0]
       if (file) {
+         setImgFile(file)
+
          const imageUrl = URL.createObjectURL(file)
          setImage(imageUrl)
          setImageName(file.name)
@@ -72,8 +92,6 @@ const DiaryForm = ({ onSave, initialDiary }) => {
             value={date}
             onChange={handleDateChange}
             fullWidth
-            error={false}
-            helperText=""
             sx={{
                marginBottom: '20px',
                '& .MuiInputBase-input': {
@@ -151,10 +169,8 @@ const DiaryForm = ({ onSave, initialDiary }) => {
             multiline
             rows={10}
             fullWidth
-            value={diaryText}
+            value={content}
             onChange={handleDiaryChange}
-            error={false}
-            helperText=""
             sx={{
                marginBottom: '20px',
                '& .MuiInputBase-input': {
@@ -221,15 +237,12 @@ const DiaryForm = ({ onSave, initialDiary }) => {
                   이미지 삭제
                </Button>
                <img src={image} alt="Selected" style={{ width: '200px', height: 'auto', borderRadius: '8px', display: 'block', margin: '0 auto' }} />
-               <Typography variant="body2" sx={{ color: 'green', marginTop: '10px' }}>
-                  {imageName}
-               </Typography>
             </div>
          )}
 
          <Button
             variant="outlined"
-            onClick={handleSaveDiary}
+            onClick={handleSubmitDiary}
             fullWidth
             sx={{
                fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",

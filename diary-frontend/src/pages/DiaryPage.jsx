@@ -1,56 +1,33 @@
-import React, { useState, useEffect } from 'react'
-import { Container, Typography, Button, Box } from '@mui/material'
+import { Container, Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import DiaryForm from '../components/diary/DiaryForm'
-import axios from 'axios'
+import { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { createDiaryThunk } from '../features/diarySlice'
 
 const DiaryPage = () => {
-   const [diaries, setDiaries] = useState([])
    const navigate = useNavigate()
+   const dispatch = useDispatch()
 
-   // 일기 목록 가져오기
-   useEffect(() => {
-      const fetchDiaries = async () => {
-         try {
-            const response = await axios.get('http://localhost:5000/api/diaries')
-            setDiaries(response.data.diaries)
-         } catch (error) {
-            console.error('일기를 가져오는 데 실패했습니다.', error)
-         }
-      }
+   const handleSubmit = useCallback(
+      (diaryData) => {
+         dispatch(createDiaryThunk(diaryData))
+            .unwrap()
+            .then(() => {
+               //navigate('/') //게시물 등록 후 메인페이지로 이동
+               window.location.href = '/' // 페이지 이동 => 전체 페이지 새로고침
+            })
+            .catch((error) => {
+               console.error('게시물 등록 에러: ', error)
+               alert('게시물 등록에 실패했습니다.', error)
+            })
+      },
+      [dispatch]
+   )
 
-      fetchDiaries()
-   }, [])
-
-   // 일기 저장 함수
-   const handleSaveDiary = async (diaryText) => {
-      if (diaryText.trim() === '') {
-         alert('일기 내용을 작성해주세요.')
-         return
-      }
-
-      const newDiary = {
-         text: diaryText,
-         date: new Date().toLocaleDateString(),
-      }
-
-      try {
-         // 백엔드 API로 일기 데이터를 전송
-         const response = await axios.post('http://localhost:5000/api/diaries', newDiary)
-         const savedDiary = response.data.diary
-
-         // 일기 목록에 추가
-         setDiaries([...diaries, savedDiary])
-
-         alert('일기가 성공적으로 저장되었습니다!')
-      } catch (error) {
-         console.error('일기 저장에 실패했습니다.', error)
-         alert('일기 저장에 실패했습니다.')
-      }
-   }
-
+   // 다이어리 목록 보기
    const handleGoToDiaryList = () => {
-      navigate('/diary-list', { state: { diaries } })
+      navigate('/diary-list')
    }
 
    return (
@@ -63,28 +40,15 @@ const DiaryPage = () => {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed',
-            height: '100vh',
+            height: '100%',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
          }}
       >
-         <Typography
-            variant="h4"
-            gutterBottom
-            align="center"
-            sx={{
-               fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
-               color: 'green',
-            }}
-         >
-            비밀일기 작성
-         </Typography>
-
-         <Box sx={{ width: '100%', maxWidth: '600px', padding: '20px', borderRadius: '8px', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-            <DiaryForm onSave={handleSaveDiary} />
-         </Box>
+         <DiaryForm onSubmit={handleSubmit} />
 
          <Button
             variant="outlined"

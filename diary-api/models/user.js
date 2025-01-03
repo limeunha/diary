@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize')
-const bcrypt = require('bcrypt')
 
 module.exports = class User extends Sequelize.Model {
    static init(sequelize) {

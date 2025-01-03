@@ -22,10 +22,11 @@ export const loginUserThunk = createAsyncThunk('auth/loginUser', async (credenti
 })
 
 // 로그아웃 thunk
+// _(언더바)는 매개변수 값이 없을 때 사용
 export const logoutUserThunk = createAsyncThunk('auth/logoutUser', async (_, { rejectWithValue }) => {
    try {
       const response = await logoutUser()
-      return response.data // 로그아웃 후 데이터 반환
+      return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '로그아웃 실패')
    }

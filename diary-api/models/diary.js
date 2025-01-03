@@ -5,7 +5,7 @@ module.exports = class Diary extends Sequelize.Model {
       return super.init(
          {
             title: {
-               type: Sequelize.STRING(255),
+               type: Sequelize.STRING(100),
                allowNull: false,
             },
             content: {
@@ -13,7 +13,7 @@ module.exports = class Diary extends Sequelize.Model {
                allowNull: false,
             },
             img: {
-               type: Sequelize.STRING(255),
+               type: Sequelize.STRING,
                allowNull: true,
             },
          },
@@ -31,6 +31,6 @@ module.exports = class Diary extends Sequelize.Model {
    }
 
    static associate(db) {
-      db.Diary.belongsTo(db.User)
+      db.Diary.belongsTo(db.User, { foreignKey: 'UserId' })
    }
 }

@@ -58,7 +58,12 @@ export const checkAuthStatus = async () => {
 // 다이어리 등록
 export const createDiary = async (diaryData) => {
    try {
-      const response = await diaryApi.post('/diary', diaryData)
+      const config = {
+         headers: {
+            'Content-Type': 'multipart/form-data',
+         },
+      }
+      const response = await diaryApi.post('/diary', diaryData, config)
       return response
    } catch (error) {
       console.error(`API Request 오류: ${error.message}`)
@@ -69,7 +74,12 @@ export const createDiary = async (diaryData) => {
 // 다이어리 수정
 export const updateDiary = async (id, diaryData) => {
    try {
-      const response = await diaryApi.put(`/diary/${id}`, diaryData)
+      const config = {
+         headers: {
+            'Content-Type': 'multipart/form-data',
+         },
+      }
+      const response = await diaryApi.put(`/diary/edit/${id}`, diaryData, config)
       return response
    } catch (error) {
       console.error(`API Request 오류: ${error.message}`)
@@ -88,10 +98,10 @@ export const deleteDiary = async (id) => {
    }
 }
 
-// 특정 다이어리 가져오기
+// 다이어리 가져오기
 export const getDiaryById = async (id) => {
    try {
-      const response = await diaryApi.get(`/diaries/${id}`)
+      const response = await diaryApi.get(`/diary/${id}`)
       return response
    } catch (error) {
       console.error(`API Request 오류: ${error.message}`)
@@ -99,7 +109,7 @@ export const getDiaryById = async (id) => {
    }
 }
 
-// 전체 다이어리 목록 가져오기 (페이징)
+// 전체 다이어리 가져오기 (페이징)
 export const getDiaries = async (page) => {
    try {
       const response = await diaryApi.get(`/diary?page=${page}`)
