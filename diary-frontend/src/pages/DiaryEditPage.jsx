@@ -8,6 +8,7 @@ import { fetchDiaryByIdThunk, updateDiaryThunk } from '../features/diarySlice'
 const DiaryEditPage = () => {
    const { id } = useParams()
    const dispatch = useDispatch()
+
    const { diary, loading, error } = useSelector((state) => state.diary)
 
    useEffect(() => {
@@ -22,8 +23,8 @@ const DiaryEditPage = () => {
                window.location.href = '/'
             })
             .catch((error) => {
-               console.error('게시물 수정 중 오류 발생:', error)
-               alert('게시물 수정에 실패했습니다.')
+               console.error('다이어리 수정 중 오류 발생:', error)
+               alert('다이어리 수정에 실패했습니다.')
             })
       },
       [dispatch, id]

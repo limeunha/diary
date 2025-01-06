@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { TextField, Button, Typography, Container } from '@mui/material'
 
-const DiaryForm = ({ onSubmit, initialDiary }) => {
+const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
    const [content, setContent] = useState('')
    const [imgFile, setImgFile] = useState(null) // 이미지 파일 객체
    const [image, setImage] = useState(null)

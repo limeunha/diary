@@ -120,7 +120,7 @@ router.delete('/:id', isLoggedIn, async (req, res) => {
 router.get('/:id', async (req, res) => {
    try {
       const diary = await Diary.findByPk(req.params.id, {
-         include: [{ model: User, attributes: ['id', 'nick', 'email'] }],
+         include: [{ model: User, attributes: ['id', 'name', 'email'] }],
       })
 
       if (!diary) {
