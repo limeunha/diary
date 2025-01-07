@@ -10,7 +10,7 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
    const [title, setTitle] = useState('')
 
    useEffect(() => {
-      if (initialDiary) {
+      if (initialDiary && initialDiary.id) {
          setContent(initialDiary.text || '')
          setDate(initialDiary.date || '')
          setImage(initialDiary.image || null)
