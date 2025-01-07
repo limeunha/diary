@@ -19,8 +19,7 @@ const DiaryListPage = () => {
             .unwrap()
             .then(() => {
                alert('삭제되었습니다.')
-               const updatedDiaries = diaries.filter((diary) => diary.id !== id)
-               dispatch({ type: 'diaries/updateDiaries', payload: updatedDiaries })
+               dispatch(fetchDiariesThunk(1))
             })
             .catch((error) => {
                alert('삭제에 실패했습니다.')
@@ -28,7 +27,6 @@ const DiaryListPage = () => {
       }
    }
 
-   // 수정 버튼
    const updateDiary = (id) => {
       navigate(`/diaries/edit/${id}`)
    }

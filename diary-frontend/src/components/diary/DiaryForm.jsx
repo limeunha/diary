@@ -84,7 +84,7 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
    return (
       <Container maxWidth="md" sx={{ paddingTop: '20px', color: 'green', fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif" }}>
          <Typography variant="h4" gutterBottom align="center" sx={{ fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif", color: 'green' }}>
-            나만의 비밀일기
+            {initialDiary && initialDiary.id ? '비밀일기 수정' : '나만의 비밀일기'}
          </Typography>
 
          <TextField
@@ -255,7 +255,7 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
                height: '56px',
             }}
          >
-            일기 저장
+            {initialDiary && initialDiary.id ? '일기 수정' : '일기 저장'}
          </Button>
       </Container>
    )
