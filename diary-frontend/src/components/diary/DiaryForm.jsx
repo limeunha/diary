@@ -1,85 +1,70 @@
-import React, { useState, useEffect } from 'react'
-import { TextField, Button, Typography, Container } from '@mui/material'
+import React, { useState, useEffect } from 'react';
+import { Container, TextField, Button, Typography } from '@mui/material';
 
 const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
-   const [content, setContent] = useState('')
-   const [imgFile, setImgFile] = useState(null) // 이미지 파일 객체
-   const [image, setImage] = useState(null)
-   const [imageName, setImageName] = useState('')
-   const [date, setDate] = useState('')
-   const [title, setTitle] = useState('')
+   const [content, setContent] = useState('');
+   const [imgFile, setImgFile] = useState(null);
+   const [image, setImage] = useState(null);
+   const [imageName, setImageName] = useState('');
+   const [date, setDate] = useState('');
+   const [title, setTitle] = useState('');
 
+  
    useEffect(() => {
       if (initialDiary && initialDiary.id) {
-         setContent(initialDiary.text || '')
-         setDate(initialDiary.date || '')
-         setImage(initialDiary.image || null)
-         setImageName(initialDiary.imageName || '')
-         setTitle(initialDiary.title || '')
-      } else {
-         setContent('')
-         setDate('')
-         setImage(null)
-         setImageName('')
-         setTitle('')
+         setContent(initialDiary.text || '');
+         setDate(initialDiary.date || '');
+         setImage(initialDiary.image || null);
+         setImageName(initialDiary.imageName || '');
+         setTitle(initialDiary.title || '');
       }
-   }, [initialDiary])
+   }, [initialDiary]);
 
-   const handleDiaryChange = (event) => setContent(event.target.value)
-   const handleDateChange = (event) => setDate(event.target.value)
-   const handleTitleChange = (event) => setTitle(event.target.value)
+  
+   const handleDiaryChange = (event) => setContent(event.target.value);
+   const handleDateChange = (event) => setDate(event.target.value);
+   const handleTitleChange = (event) => setTitle(event.target.value);
+
+   const handleImageChange = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+         setImgFile(file);
+         const imageUrl = URL.createObjectURL(file);
+         setImage(imageUrl);
+         setImageName(file.name);
+      }
+   };
+
+   const handleDeleteImage = () => {
+      setImage(null);
+      setImageName('');
+   };
 
    const handleSubmitDiary = () => {
-      if (content.trim() === '') {
-         alert('일기를 작성해주세요!')
-         return
+      if (!content.trim() || !title.trim()) {
+         alert('제목과 내용을 입력해주세요!');
+         return;
       }
-      // if (date === '') {
-      //    alert('날짜를 선택해주세요!')
-      //    return
-      // }
 
-      const formData = new FormData() //폼 데이터를 쉽게 생성하고 전송할 수 있도록 하는 객체
-      formData.append('content', content)
-      formData.append('title', title)
-      // formData.append('date', date)
+      const formData = new FormData();
+      formData.append('content', content);
+      formData.append('title', title);
 
-      // 내용만 수정할때 에러 방지
       if (imgFile) {
-         // 파일명 인코딩(한글 파일명 깨짐 방지)
-         const encodedFile = new File([imgFile], encodeURIComponent(imgFile.name), { type: imgFile.type })
-
-         formData.append('img', encodedFile) //이미지 파일 추가
+         formData.append('img', imgFile);
       }
 
       if (typeof onSubmit === 'function') {
          onSubmit(formData)
-      } else {
-         console.error('실패했습니다.')
       }
-
-      setContent('')
-      setTitle('')
-      // setDate('')
-      setImage(null)
-      // setImageName('')
-   }
-
-   const handleImageChange = (event) => {
-      const file = event.target.files[0]
-      if (file) {
-         setImgFile(file)
-
-         const imageUrl = URL.createObjectURL(file)
-         setImage(imageUrl)
-         setImageName(file.name)
-      }
-   }
-
-   const handleDeleteImage = () => {
-      setImage(null)
-      setImageName('')
-   }
+      
+      // 상태 초기화
+      setContent('');
+      setTitle('');
+      setDate('');
+      setImage(null);
+      setImageName('');
+   };
 
    return (
       <Container maxWidth="md" sx={{ paddingTop: '20px', color: 'green', fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif" }}>
@@ -87,6 +72,7 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
             {initialDiary && initialDiary.id ? '비밀일기 수정' : '나만의 비밀일기'}
          </Typography>
 
+       
          <TextField
             type="date"
             value={date}
@@ -97,9 +83,6 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
                '& .MuiInputBase-input': {
                   fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
                   fontSize: '20px',
-                  color: 'green',
-               },
-               '&:hover .MuiInputBase-input': {
                   color: 'green',
                },
                '& .MuiFormLabel-root': {
@@ -125,6 +108,7 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
             }}
          />
 
+       
          <TextField
             label="제목"
             variant="outlined"
@@ -136,9 +120,6 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
                '& .MuiInputBase-input': {
                   fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
                   fontSize: '20px',
-                  color: 'green',
-               },
-               '&:hover .MuiInputBase-input': {
                   color: 'green',
                },
                '& .MuiFormLabel-root': {
@@ -178,9 +159,6 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
                   fontSize: '20px',
                   color: 'green',
                },
-               '&:hover .MuiInputBase-input': {
-                  color: 'green',
-               },
                '& .MuiFormLabel-root': {
                   fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
                   fontSize: '20px',
@@ -204,6 +182,7 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
             }}
          />
 
+    
          <input
             type="file"
             accept="image/*"
@@ -216,6 +195,7 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
             }}
          />
 
+       
          {image && (
             <div style={{ position: 'relative', textAlign: 'center', marginTop: '10px', padding: '10px', borderRadius: '8px' }}>
                <Button
@@ -240,6 +220,7 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
             </div>
          )}
 
+       
          <Button
             variant="outlined"
             onClick={handleSubmitDiary}
@@ -258,7 +239,8 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
             {initialDiary && initialDiary.id ? '일기 수정' : '일기 저장'}
          </Button>
       </Container>
-   )
-}
+   );
+};
 
 export default DiaryForm
+

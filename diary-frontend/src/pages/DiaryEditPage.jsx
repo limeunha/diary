@@ -9,18 +9,21 @@ const DiaryEditPage = () => {
    const { id } = useParams()
    const dispatch = useDispatch()
 
-   const { diary, loading, error } = useSelector((state) => state.diary)
+   
+   const { diary, loading, error } = useSelector((state) => state.diary || {})
 
    useEffect(() => {
+   
       dispatch(fetchDiaryByIdThunk(id))
    }, [dispatch, id])
 
    const handleSubmit = useCallback(
       (diaryData) => {
+       
          dispatch(updateDiaryThunk({ id, diaryData }))
             .unwrap()
             .then(() => {
-               window.location.href = '/'
+               window.location.href = '/' 
             })
             .catch((error) => {
                console.error('다이어리 수정 중 오류 발생:', error)
@@ -31,14 +34,19 @@ const DiaryEditPage = () => {
    )
 
    if (loading) return <p>로딩 중...</p>
-   if (error) return <p>에러발생: {error}</p>
+   if (error) return <p>에러 발생: {error}</p>
+
+   if (!diary) return <p>다이어리 데이터를 찾을 수 없습니다.</p>
 
    return (
       <Container maxWidth="md">
          <h1>다이어리 수정</h1>
-         {diary && <DiaryForm onSubmit={handleSubmit} initialValues={diary} />}
+         <DiaryForm onSubmit={handleSubmit} initialValues={diary} />
       </Container>
    )
 }
 
 export default DiaryEditPage
+
+
+

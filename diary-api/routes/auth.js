@@ -8,13 +8,6 @@ const router = express.Router()
 
 //회원가입 localhost:8000/auth/join
 router.post('/join', isNotLoggedIn, async (req, res, next) => {
-   /*
-    {
-        email: 'test@test.com',
-        nick: '김하서',
-        password: 11111
-    }
-    */
    const { email, name, password } = req.body
    try {
       //이메일로 기존 사용자 검색

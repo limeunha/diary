@@ -19,7 +19,7 @@ const DiaryPage = () => {
             })
             .catch((error) => {
                console.error('게시물 등록 에러: ', error)
-               alert('게시물 등록에 실패했습니다.', error)
+               alert('게시물 등록에 실패했습니다.')
             })
       },
       [dispatch]
@@ -68,10 +68,11 @@ const DiaryPage = () => {
                borderRadius: '8px',
             }}
          >
-            저장된 일기 목록 보러 가기
+            저장된 일기 목록 
          </Button>
       </Container>
    )
 }
 
 export default DiaryPage
+
