@@ -22,10 +22,11 @@ export const loginUserThunk = createAsyncThunk('auth/loginUser', async (credenti
 })
 
 // 로그아웃 thunk
+// _(언더바)는 매개변수 값이 없을 때 사용
 export const logoutUserThunk = createAsyncThunk('auth/logoutUser', async (_, { rejectWithValue }) => {
    try {
-      await logoutUser()
-      return {} // 로그아웃 성공 시 빈 객체 반환
+      const response = await logoutUser()
+      return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '로그아웃 실패')
    }
@@ -78,7 +79,7 @@ const authSlice = createSlice({
          })
          .addCase(loginUserThunk.rejected, (state, action) => {
             state.loading = false
-            state.error = action.payload || '로그인 실패'
+            state.error = action.payload
          })
       // 로그아웃
       builder
@@ -93,7 +94,7 @@ const authSlice = createSlice({
          })
          .addCase(logoutUserThunk.rejected, (state, action) => {
             state.loading = false
-            state.error = action.payload || '로그아웃 실패'
+            state.error = action.payload
          })
       // 로그인 상태 확인
       builder
@@ -108,7 +109,7 @@ const authSlice = createSlice({
          })
          .addCase(checkAuthStatusThunk.rejected, (state, action) => {
             state.loading = false
-            state.error = action.payload || '상태 확인 실패'
+            state.error = action.payload
             state.isAuthenticated = false
             state.user = null
          })

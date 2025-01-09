@@ -10,12 +10,9 @@ const router = express.Router()
 router.post('/join', isNotLoggedIn, async (req, res, next) => {
    const { email, name, password } = req.body
    try {
-      //이메일로 기존 사용자 검색
-      // select * from users where email = ?
       const exUser = await User.findOne({ where: { email } })
 
       if (exUser) {
-         //이미 사용자가 존재할 경우 409 상태코드와 메세지를 json객체로 응답하면서 함수를 끝냄
          return res.status(409).json({
             success: false,
             message: '이미 존재하는 사용자입니다.',

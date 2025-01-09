@@ -28,7 +28,7 @@ export const deleteDiaryThunk = createAsyncThunk('diaries/deleteDiary', async (i
       const response = await deleteDiary(id)
       return id
    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || ' 삭제 실패')
+      return rejectWithValue(error.response?.data?.message || '삭제 실패')
    }
 })
 
@@ -110,6 +110,7 @@ const diarySlice = createSlice({
          })
          .addCase(deleteDiaryThunk.fulfilled, (state, action) => {
             state.loading = false
+            state.diaries = state.diaries.filter((diary) => diary.id !== action.payload)
          })
          .addCase(deleteDiaryThunk.rejected, (state, action) => {
             state.loading = false
@@ -122,6 +123,7 @@ const diarySlice = createSlice({
          })
          .addCase(updateDiaryThunk.fulfilled, (state, action) => {
             state.loading = false
+            state.diary = action.payload
          })
          .addCase(updateDiaryThunk.rejected, (state, action) => {
             state.loading = false
