@@ -28,7 +28,7 @@ const DiaryListPage = () => {
    }
 
    const updateDiary = (id) => {
-      navigate(`/diaries/edit/${id}`)
+      navigate(`/diaries/edit/${id}`) // 수정 페이지로 이동
    }
 
    return (
@@ -129,7 +129,7 @@ const DiaryListPage = () => {
                               marginBottom: '10px',
                            }}
                         >
-                           {diary.text ? diary.text : '내용 없음'}
+                           {diary.content ? diary.content : '내용 없음'}
                         </Typography>
                         <Typography
                            variant="body2"

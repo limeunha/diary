@@ -62,7 +62,7 @@ router.post('/', isLoggedIn, upload.single('img'), async (req, res) => {
 })
 
 // 다이어리 수정 (PUT)
-router.put('/:id', isLoggedIn, upload.single('img'), async (req, res) => {
+router.put('/edit/:id', isLoggedIn, upload.single('img'), async (req, res) => {
    try {
       // 다이어리 찾기
       const diary = await Diary.findOne({ where: { id: req.params.id, UserId: req.user.id } })

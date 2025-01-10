@@ -1,8 +1,8 @@
+import React, { useCallback } from 'react'
 import { Container, Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import DiaryForm from '../components/diary/DiaryForm'
-import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
+import DiaryForm from '../components/diary/DiaryForm'
 import { createDiaryThunk } from '../features/diarySlice'
 
 const DiaryPage = () => {
@@ -11,11 +11,12 @@ const DiaryPage = () => {
 
    const handleSubmit = useCallback(
       (diaryData) => {
+         console.log('Received diary data: ', diaryData)
+
          dispatch(createDiaryThunk(diaryData))
             .unwrap()
             .then(() => {
-               //navigate('/') //게시물 등록 후 메인페이지로 이동
-               window.location.href = '/' // 페이지 이동 => 전체 페이지 새로고침
+               window.location.href = '/'
             })
             .catch((error) => {
                console.error('게시물 등록 에러: ', error)
@@ -68,11 +69,10 @@ const DiaryPage = () => {
                borderRadius: '8px',
             }}
          >
-            저장된 일기 목록 
+            저장된 일기 목록
          </Button>
       </Container>
    )
 }
 
 export default DiaryPage
-

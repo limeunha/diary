@@ -3,25 +3,25 @@ import { Container, TextField, Button, Typography } from '@mui/material'
 
 const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
    const [content, setContent] = useState('')
+   const [title, setTitle] = useState('')
+   const [date, setDate] = useState('') // 날짜 상태 추가
    const [imgFile, setImgFile] = useState(null)
    const [image, setImage] = useState(null)
    const [imageName, setImageName] = useState('')
-   const [date, setDate] = useState('')
-   const [title, setTitle] = useState('')
 
    useEffect(() => {
       if (initialDiary && initialDiary.id) {
-         setContent(initialDiary.text || '')
-         setDate(initialDiary.date || '')
+         setContent(initialDiary.content || '')
+         setTitle(initialDiary.title || '')
          setImage(initialDiary.image || null)
          setImageName(initialDiary.imageName || '')
-         setTitle(initialDiary.title || '')
+         setDate(initialDiary.date || '') // 초기 다이어리의 날짜값 설정
       }
    }, [initialDiary])
 
    const handleDiaryChange = (event) => setContent(event.target.value)
-   const handleDateChange = (event) => setDate(event.target.value)
    const handleTitleChange = (event) => setTitle(event.target.value)
+   const handleDateChange = (event) => setDate(event.target.value) // 날짜 변경 처리
 
    const handleImageChange = (event) => {
       const file = event.target.files[0]
@@ -39,14 +39,15 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
    }
 
    const handleSubmitDiary = () => {
-      if (!content.trim() || !title.trim()) {
-         alert('제목과 내용을 입력해주세요!')
+      if (!content.trim() || !title.trim() || !date.trim()) {
+         alert('제목, 내용, 날짜를 입력해주세요!')
          return
       }
 
       const formData = new FormData()
       formData.append('content', content)
       formData.append('title', title)
+      formData.append('date', date) // 날짜 추가
 
       if (imgFile) {
          formData.append('img', imgFile)
@@ -65,11 +66,32 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
    }
 
    return (
-      <Container maxWidth="md" sx={{ paddingTop: '20px', color: 'green', fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif", backgroundImage: 'url(/images/Rudolph.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed', height: '100%' }}>
-         <Typography variant="h4" gutterBottom align="center" sx={{ fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif", color: 'green' }}>
+      <Container
+         maxWidth="md"
+         sx={{
+            paddingTop: '20px',
+            color: 'green',
+            fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
+            backgroundImage: 'url(/images/Rudolph.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+            height: '100%',
+         }}
+      >
+         <Typography
+            variant="h4"
+            gutterBottom
+            align="center"
+            sx={{
+               fontFamily: "'TTHakgyoansimKkokkomaR', sans-serif",
+               color: 'green',
+            }}
+         >
             {initialDiary && initialDiary.id ? '비밀일기 수정' : '나만의 비밀일기'}
          </Typography>
 
+         {/* 날짜 입력 필드 */}
          <TextField
             type="date"
             value={date}
@@ -105,6 +127,7 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
             }}
          />
 
+         {/* 제목 입력 필드 */}
          <TextField
             label="제목"
             variant="outlined"
@@ -141,6 +164,7 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
             }}
          />
 
+         {/* 비밀 내용 입력 필드 */}
          <TextField
             label="비밀내용"
             multiline
@@ -178,6 +202,7 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
             }}
          />
 
+         {/* 이미지 업로드 */}
          <input
             type="file"
             accept="image/*"
@@ -190,8 +215,17 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
             }}
          />
 
+         {/* 이미지 미리보기 및 삭제 버튼 */}
          {image && (
-            <div style={{ position: 'relative', textAlign: 'center', marginTop: '10px', padding: '10px', borderRadius: '8px' }}>
+            <div
+               style={{
+                  position: 'relative',
+                  textAlign: 'center',
+                  marginTop: '10px',
+                  padding: '10px',
+                  borderRadius: '8px',
+               }}
+            >
                <Button
                   variant="outlined"
                   color="secondary"
@@ -210,10 +244,21 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
                >
                   이미지 삭제
                </Button>
-               <img src={image} alt="Selected" style={{ width: '200px', height: 'auto', borderRadius: '8px', display: 'block', margin: '0 auto' }} />
+               <img
+                  src={image}
+                  alt="Selected"
+                  style={{
+                     width: '200px',
+                     height: 'auto',
+                     borderRadius: '8px',
+                     display: 'block',
+                     margin: '0 auto',
+                  }}
+               />
             </div>
          )}
 
+         {/* 제출 버튼 */}
          <Button
             variant="outlined"
             onClick={handleSubmitDiary}
