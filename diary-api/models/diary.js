@@ -31,6 +31,6 @@ module.exports = class Diary extends Sequelize.Model {
    }
 
    static associate(db) {
-      db.Diary.belongsTo(db.User, { foreignKey: 'UserId' })
+      db.Diary.belongsTo(db.User, { foreignKey: 'userId' })
    }
 }

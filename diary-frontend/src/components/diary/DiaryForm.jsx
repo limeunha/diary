@@ -53,6 +53,10 @@ const DiaryForm = ({ onSubmit, initialDiary = {} }) => {
          formData.append('img', imgFile)
       }
 
+      if (imageName) {
+         formData.append('imageName', imageName)
+      }
+
       if (typeof onSubmit === 'function') {
          onSubmit(formData)
       }

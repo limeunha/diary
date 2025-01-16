@@ -25,7 +25,7 @@ export const updateDiaryThunk = createAsyncThunk('diaries/updateDiary', async (d
 // 게시물 삭제
 export const deleteDiaryThunk = createAsyncThunk('diaries/deleteDiary', async (id, { rejectWithValue }) => {
    try {
-      const response = await deleteDiary(id)
+      await deleteDiary(id)
       return id
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '삭제 실패')

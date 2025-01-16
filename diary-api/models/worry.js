@@ -27,6 +27,6 @@ module.exports = class Worry extends Sequelize.Model {
    }
 
    static associate(db) {
-      db.Worry.belongsTo(db.User, { foreignKey: 'UserId' })
+      db.Worry.belongsTo(db.User, { foreignKey: 'userId' })
    }
 }

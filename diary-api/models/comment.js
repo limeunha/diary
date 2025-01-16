@@ -35,6 +35,6 @@ module.exports = class Comment extends Sequelize.Model {
    }
 
    static associate(db) {
-      this.belongsTo(db.User, { foreignKey: 'authorId', targetKey: 'id' })
+      Comment.belongsTo(db.User, { foreignKey: 'authorId', targetKey: 'id' })
    }
 }
